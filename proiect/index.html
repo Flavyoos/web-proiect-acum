@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <!-- Setări de bază: codificarea caracterelor (diacritice) și viewport pentru mobil -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineRadar — Căutător de Filme și Seriale</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!--
+    <header> = zona "hero" a homepage-ului: titlu, subtitlu și formularul de căutare.
+  -->
+  <header class="hero">
+    <div class="hero__inner">
+      <p class="hero__eyebrow">Căutător de filme &amp; seriale</p>
+      <!-- <span> ne permite să colorăm doar a doua parte a numelui (vezi style.css) -->
+      <h1>Cine<span class="hero__brand-accent">Radar</span></h1>
+      <p class="hero__subtitle">Găsește-ți următorul film sau serial preferat: caută orice titlu sau alege din sugestiile de mai jos.</p>
+
+      <!--
+        role="search" marchează formularul ca zonă de căutare (accesibilitate).
+        Formularul NU are action/method: trimiterea e interceptată în script.js
+        cu event.preventDefault(), ca pagina să nu se reîncarce.
+      -->
+      <form id="search-form" class="search-form" role="search">
+        <!-- <label> legat de input prin for="movie-input" -->
+        <label for="movie-input" class="visually-hidden">Numele filmului sau serialului</label>
+        <input
+          type="text"
+          id="movie-input"
+          name="title"
+          placeholder="ex: Inception, Breaking Bad..."
+          autocomplete="off"
+          required
+        >
+        <button type="submit">Caută</button>
+      </form>
+    </div>
+  </header>
+
+  <!-- <main>: conținutul principal, unic pe pagină -->
+  <main class="container">
+
+    <!--
+      Containerul GOL pentru rezultatul căutării / detaliile unei sugestii.
+      JavaScript creează cardul și îl pune aici. aria-live="polite" anunță
+      cititoarele de ecran când conținutul se schimbă.
+    -->
+    <section id="results" class="results" aria-live="polite"></section>
+
+    <!-- Secțiunea de sugestii; aria-labelledby o leagă de titlul ei <h2> -->
+    <section class="suggestions" aria-labelledby="suggestions-title">
+      <div class="suggestions__header">
+        <h2 id="suggestions-title">Sugestii pentru tine</h2>
+
+        <div class="suggestions__controls">
+          <!--
+            Butoane de filtrare. data-filter este un atribut "data-*" personalizat:
+            în JS îl citim cu button.dataset.filter.
+            aria-pressed spune cititoarelor de ecran care filtru e activ.
+          -->
+          <div class="filters" role="group" aria-label="Filtrează sugestiile">
+            <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">Toate</button>
+            <button type="button" class="filter" data-filter="movie" aria-pressed="false">Filme</button>
+            <button type="button" class="filter" data-filter="series" aria-pressed="false">Seriale</button>
+          </div>
+
+          <button type="button" id="random-btn" class="random-btn">Surprinde-mă</button>
+        </div>
+      </div>
+
+      <!-- Grila GOALĂ: cardurile de sugestii sunt create din JavaScript -->
+      <div id="suggestions-grid" class="suggestions__grid"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>CineRadar</strong> · Date furnizate de <a href="https://www.omdbapi.com/" target="_blank" rel="noopener">OMDb API</a></p>
+  </footer>
+
+  <!-- Scriptul e încărcat la final, după ce tot HTML-ul există în DOM. -->
+  <script src="script.js"></script>
+</body>
+</html>
